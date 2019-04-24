@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from urllib import urlencode
 from httplib2 import Http
 import json
