@@ -43,9 +43,9 @@ try:
 	token = new_content['token']
 	print "received token: %s" % token
 except Exception as err:
-	print "Test 2 FAILED: Could not exchange user credentials for a token"
-	print err.args
-	sys.exit()
+    print "Test 2 FAILED: Could not exchange user credentials for a token"
+    print err.args
+    sys.exit()
 else:
 	print "Test 2 PASS: Succesfully obtained token! "
 
