@@ -30,6 +30,8 @@ app = Flask(__name__)
 
 @app.route('/users', methods = ['POST'])
 def new_user():
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
     username = request.json.get('username')
     password = request.json.get('password')
     if username is None or password is None:
@@ -49,6 +51,8 @@ def new_user():
 
 @app.route('/users/<int:id>')
 def get_user(id):
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
     user = session.query(User).filter_by(id=id).one()
     if not user:
         abort(400)
@@ -57,11 +61,15 @@ def get_user(id):
 @app.route('/resource')
 @auth.login_required
 def get_resource():
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
     return jsonify({ 'data': 'Hello, %s!' % g.user.username })
 
 @app.route('/products', methods = ['GET', 'POST'])
 @auth.login_required
 def showAllProducts():
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
     if request.method == 'GET':
         products = session.query(Product).all()
         return jsonify(products = [p.serialize for p in products])
@@ -79,6 +87,8 @@ def showAllProducts():
 @app.route('/products/<category>')
 @auth.login_required
 def showCategoriedProducts(category):
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
     if category == 'fruit':
         fruit_items = session.query(Product).filter_by(category = 'fruit').all()
         return jsonify(fruit_products = [f.serialize for f in fruit_items])
