@@ -33,10 +33,13 @@ def verify_password(username_or_token, password):
     g.user = user
     return True
 
-#add /token route here to get a token for a user with login credentials
-
-
-
+@app.route('/token')
+@auth.login_required
+def get_auth_token():
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
+    token = g.user.generate_auth_token()
+    return jsonify({'token': token.decode('ascii')})
 
 @app.route('/users', methods = ['POST'])
 def new_user():
